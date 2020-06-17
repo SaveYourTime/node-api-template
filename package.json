@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "NODE_ENV=production nodemon --experimental-specifier-resolution=node index.js",
-    "start:dev": "NODE_ENV=development nodemon --experimental-specifier-resolution=node index.js"
+    "start:dev": "NODE_ENV=development nodemon --experimental-specifier-resolution=node index.js",
+    "lint": "eslint \"./**/*.js\" --fix",
+    "format": "prettier --write \"./**/*.js\""
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -22,5 +24,26 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "./**/*.js": [
+      "eslint --fix"
+    ]
   }
 }
