@@ -25,7 +25,7 @@ router.post(
       .withMessage('password must be at least 6 chars long')
       .matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)
       .withMessage(
-        'password must contain at least one Capital letter, at least one lower case letter and at least one number or special character'
+        'password must contain at least one Capital letter, at least one lower case letter and at least one number or special character',
       )
       .trim(),
   ]),
@@ -35,7 +35,7 @@ router.post(
     const user = { id: Math.random(), username, password: hashedPassword };
     users.push(user);
     res.status(201).json({ ...user, password: undefined });
-  }
+  },
 );
 
 router.post(
@@ -47,26 +47,29 @@ router.post(
       .withMessage('password must be at least 6 chars long')
       .matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)
       .withMessage(
-        'password must contain at least one Capital letter, at least one lower case letter and at least one number or special character'
+        'password must contain at least one Capital letter, at least one lower case letter and at least one number or special character',
       )
       .trim(),
   ]),
   async (req, res, next) => {
     const { username, password } = req.body;
-    const user = users.find((user) => user.username === username) || {};
+    const user = users.find((e) => e.username === username) || {};
     const match = await bcrypt.compare(password, user.password || '');
     if (match) {
       const token = jwt.sign({ ...user, password: undefined }, process.env.JWT_SECRET_KEY, {
         expiresIn: process.env.JWT_EXPIRES_IN,
       });
-      res.cookie('token', token, { maxAge: +process.env.JWT_EXPIRES_IN, httpOnly: true });
+      res.cookie('token', token, {
+        maxAge: +process.env.JWT_EXPIRES_IN,
+        httpOnly: true,
+      });
       return res.status(200).json({ token });
     }
     const err = new Error();
     err.statusCode = 401;
     err.message = 'Unauthorized';
-    next(err);
-  }
+    return next(err);
+  },
 );
 
 export default router;
