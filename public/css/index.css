@@ -1,0 +1,20 @@
+body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  min-height: 100vh;
+  background-color: #333;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+h2 {
+  color: #ccc;
+}
